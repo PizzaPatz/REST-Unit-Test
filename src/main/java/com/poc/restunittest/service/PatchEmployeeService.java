@@ -1,6 +1,5 @@
 package com.poc.restunittest.service;
 
-import com.poc.restunittest.exception.CustomException;
 import com.poc.restunittest.mapper.PatchEmployeeMap;
 import com.poc.restunittest.model.entity.EmployeeEntity;
 import com.poc.restunittest.model.request.PatchEmployeeRequest;
@@ -9,6 +8,7 @@ import com.poc.restunittest.repository.EmployeeRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.HttpClientErrorException;
 
 import java.util.Optional;
 
@@ -21,7 +21,7 @@ public class PatchEmployeeService {
         this.employeeRepository = employeeRepository;
     }
 
-    public Object run(PatchEmployeeRequest patchEmployeeRequest){
+    public ResponseEntity<PatchEmployeeResponse> run(PatchEmployeeRequest patchEmployeeRequest){
 
         Optional<EmployeeEntity> retrievedEmployee = employeeRepository.findById(Integer.parseInt(patchEmployeeRequest.getId()));
 
@@ -31,14 +31,10 @@ public class PatchEmployeeService {
             PatchEmployeeResponse response = PatchEmployeeResponse.builder()
                     .response("Patched employee ID : " + patchEmployeeRequest.getId() + " successfully")
                     .build();
-            return new ResponseEntity<Object>(response, HttpStatus.OK);
+            return new ResponseEntity<>(response, HttpStatus.OK);
         }
         else{
-            CustomException customException = CustomException.builder()
-                    .endpoint("/get-employee/{id}")
-                    .message("Could not find an employee")
-                    .build();
-            return new ResponseEntity<Object>(customException, HttpStatus.NOT_FOUND);
+            throw new HttpClientErrorException(HttpStatus.NOT_FOUND);
         }
 
     }

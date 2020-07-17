@@ -17,10 +17,11 @@ public class PostEmployeeService {
         this.employeeRepository = employeeRepository;
     }
 
-    public Object run(PostEmployeeRequest postEmployeeRequest){
+    public ResponseEntity<PostEmployeeResponse> run(PostEmployeeRequest postEmployeeRequest){
         EmployeeEntity employeeEntity = EmployeeEntity.builder()
                 .firstName(postEmployeeRequest.getFirstName())
                 .lastName(postEmployeeRequest.getLastName())
+                .department(postEmployeeRequest.getDepartment())
                 .birthday(postEmployeeRequest.getBirthday())
                 .build();
 
@@ -30,6 +31,6 @@ public class PostEmployeeService {
                 .response("Employee has been registered")
                 .build();
 
-        return new ResponseEntity<Object>(response, HttpStatus.CREATED);
+        return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
 }

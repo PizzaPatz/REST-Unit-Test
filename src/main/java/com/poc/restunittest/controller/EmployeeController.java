@@ -46,7 +46,6 @@ public class EmployeeController {
 
 
     @GetMapping("/get-employee/{id}")
-    @ResponseStatus(code = HttpStatus.NOT_FOUND)
     public ResponseEntity<GetEmployeeResponse> getEmployee (@PathVariable(value = "id") GetEmployeeRequest getEmployeeRequest){
         return getEmployeeService.run(getEmployeeRequest);
     }

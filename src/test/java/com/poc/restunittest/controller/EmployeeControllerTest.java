@@ -78,9 +78,4 @@ public class EmployeeControllerTest {
                 .andExpect(jsonPath("$[0].department").exists());
     }
 
-    @Test
-    public void test_temp(){
-
-    }
-
 }
